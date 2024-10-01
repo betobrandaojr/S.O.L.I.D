@@ -1,4 +1,4 @@
-class GatinhoCorreto {
+class Gatinho {
   nome: string;
   idade: number;
 
@@ -17,12 +17,12 @@ class GatinhoCorreto {
 }
 
 class GatinhoRepository {
-  salvarNoBancoDeDados(gatinho: GatinhoCorreto): void {
+  salvarNoBancoDeDados(gatinho: Gatinho): void {
     console.log(`Salvando a gatinha ${gatinho.nome} no banco de dados.`);
   }
 }
 
-const gatinhoCorreto = new GatinhoCorreto("Yuumi", 2);
+const gatinhoCorreto = new Gatinho("Yuumi", 2);
 const gatinhoRepository = new GatinhoRepository();
 
 gatinhoCorreto.miar();

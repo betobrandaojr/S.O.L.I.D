@@ -1,4 +1,4 @@
-class Gatinho {
+class GatinhoIncorreto {
   nome: string;
   idade: number;
 
@@ -20,7 +20,7 @@ class Gatinho {
   }
 }
 
-const gatinho = new Gatinho("Yuumi", 2);
-gatinho.miar();
-gatinho.dormir();
-gatinho.salvarNoBancoDeDados();
+const gatinhoIncorreto = new GatinhoIncorreto("Yuumi", 2);
+gatinhoIncorreto.miar();
+gatinhoIncorreto.dormir();
+gatinhoIncorreto.salvarNoBancoDeDados();
