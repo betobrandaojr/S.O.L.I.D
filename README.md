@@ -15,46 +15,90 @@ Agora vamos detalhar um pouco mais cada princípio e seu propósito no contexto 
 
 ### 1. **Single Responsibility Principle (Princípio da Responsabilidade Única)**
 
-- **Criador**: Este conceito foi inspirado em princípios de coesão e modularidade do design de software, que remonta aos anos 70.
-- **O que diz**: "Uma classe deve ter um, e apenas um, motivo para mudar."
-- **Explicação**: Cada classe ou módulo deve ter apenas uma responsabilidade clara e bem definida. Isso significa que ele deve lidar com apenas um aspecto da funcionalidade do sistema. Isso facilita a manutenção, pois se algo mudar, você saberá exatamente onde ir no código.
-- **Exemplo**: Uma classe `UserService` deve gerenciar as operações relacionadas ao usuário, como cadastrar e autenticar, mas não deve lidar com o envio de e-mails, que seria responsabilidade de um `EmailService`.
+
+#### **"Uma classe deve ter um, e apenas um, motivo para existir."**
+- Cada classe ou módulo deve ter apenas **uma** responsabilidade clara e bem definida. Isso significa que ele deve lidar com **apenas um** aspecto da funcionalidade do sistema. Isso facilita a manutenção, pois se algo mudar, você saberá exatamente onde ir no código.
+### Exemplo Incorreto (violando o princípio):
+Neste exemplo, a classe `Gatinho` está fazendo mais do que deveria. Além de cuidar do comportamento do gatinho, ela também está lidando com a persistência de dados no banco, o que não é responsabilidade dela.
+
+![image](https://github.com/user-attachments/assets/6be4fe3d-2d34-4025-8df7-dc1952d3cebb)
+
+### Exemplo Correto:
+Aqui está a versão corrigida, onde a responsabilidade de persistência no banco de dados foi separada da responsabilidade de gerenciar o comportamento do gatinho.
+
+![image](https://github.com/user-attachments/assets/a2cc7055-3ca2-4e80-8250-d928541995fa)
 
 ---
 
 ### 2. **Open/Closed Principle (Princípio Aberto/Fechado)**
 
-- **Criador**: O conceito foi originalmente proposto por **Bertrand Meyer** em 1988.
-- **O que diz**: "Entidades de software devem estar abertas para extensão, mas fechadas para modificação."
-- **Explicação**: O código deve ser projetado de forma que seja fácil adicionar novas funcionalidades sem a necessidade de modificar o código existente. Isso se consegue usando abstrações, como interfaces ou classes base. Modificações no código original podem introduzir bugs, então é melhor estendê-lo, como adicionando novas classes que implementem novas funcionalidades.
-- **Exemplo**: Em vez de modificar uma classe `Pagamento` diretamente para adicionar um novo método de pagamento, você cria uma nova classe que herda ou implementa uma interface de `Pagamento`.
+###**"Entidades de software devem estar abertas para extensão, mas fechadas para modificação."**
+- O código deve ser projetado de forma que seja fácil adicionar novas funcionalidades sem modificar o código já existente. Isso se consegue usando abstrações, como interfaces ou classes base, que podem ser estendidas. Ao evitar mudanças no código original, você minimiza o risco de introduzir novos bugs.
+
+#### Exemplo Incorreto (violando o princípio):
+Aqui, a classe `Gatinho` é alterada diretamente para adicionar novas funcionalidades, o que viola o Princípio Aberto/Fechado.
+
+![image](https://github.com/user-attachments/assets/b41e580b-38f1-4c44-99b7-066d64a47b2f)
+
+#### Exemplo Correto (seguindo o princípio):
+Neste exemplo, em vez de modificar a classe `Gatinho`, nós a mantemos "fechada" para modificação e "aberta" para extensão, permitindo que novas funcionalidades sejam adicionadas por meio de herança.
+
+![image](https://github.com/user-attachments/assets/634b3a01-c905-4664-b2a1-8d3b07d77089)
 
 ---
 
 ### 3. **Liskov Substitution Principle (Princípio da Substituição de Liskov)**
 
-- **Criador**: Proposto por **Barbara Liskov** em 1987.
-- **O que diz**: "Subtipos devem ser substituíveis por seus tipos base sem alterar o comportamento correto do programa."
-- **Explicação**: Se uma classe `B` herda de uma classe `A`, objetos de `B` devem poder ser usados no lugar de objetos de `A` sem causar problemas no funcionamento do sistema. A ideia é que as subclasses devem manter o comportamento esperado das classes base, sem quebrar o código que depende delas.
-- **Exemplo**: Se você tem uma classe `Animal` e uma subclasse `Pássaro`, e a classe `Animal` possui um método `mover()`, qualquer `Pássaro` também deve implementar corretamente esse método de uma forma que não quebre o código, seja voando ou andando.
+- **"Subtipos devem ser substituíveis por seus tipos base sem alterar o comportamento correto do programa."**.
+- Se uma classe GatinhoCacador herda de uma classe Gatinho, os objetos de GatinhoCacador devem poder ser usados no lugar de Gatinho sem causar problemas no funcionamento do sistema. A ideia é que as subclasses devem manter o comportamento esperado das classes base, sem quebrar o código que depende delas.
+- Se você tem uma classe Gatinho e uma subclasse GatinhoCacador, e a classe Gatinho possui métodos como miar() e dormir(), a subclasse GatinhoCacador deve implementar corretamente esses métodos sem alterar seu comportamento. Assim, GatinhoCacador pode ser usado no lugar de Gatinho sem que o código que espera um Gatinho seja quebrado.
+
+#### Exemplo Incorreto (violando o princípio):
+Nesta versão, a subclasse GatinhoCacador altera um comportamento existente de forma que, quando você a usa no lugar da classe base Gatinho, o comportamento não é o mesmo, quebrando o Princípio de Liskov.
+
+![image](https://github.com/user-attachments/assets/a66d406d-2e80-4b2b-a855-21065fb659f1)
+
+### Exemplo Correto:
+Aqui está a versão corrigida, onde a subclasse GatinhoCacador mantém o comportamento original de Gatinho e adiciona a nova funcionalidade de "caçar" sem alterar os métodos herdados.
+
+![image](https://github.com/user-attachments/assets/77a7e65f-17a3-408c-9332-e50a0ce9ba36)
 
 ---
 
 ### 4. **Interface Segregation Principle (Princípio da Segregação de Interface)**
 
-- **Criador**: Popularizado por Robert C. Martin.
-- **O que diz**: "Uma classe não deve ser forçada a implementar interfaces que ela não usa."
-- **Explicação**: Em vez de criar grandes interfaces que exigem que classes implementem métodos que não são necessários, devemos criar interfaces menores e mais específicas. Isso torna o código mais modular e evita a implementação de métodos desnecessários.
-- **Exemplo**: Imagine uma interface `Ave` que tem métodos como `voar()` e `nadar()`. Um pinguim não voa, então ele não deve ser obrigado a implementar `voar()`. A solução é criar interfaces menores, como `AveQueVoa` e `AveQueNada`.
+- **"Uma classe não deve ser forçada a implementar interfaces que ela não usa."**
+- Em vez de criar grandes interfaces que exigem que classes implementem métodos que não são necessários, devemos criar interfaces menores e mais específicas. Isso torna o código mais modular e evita a implementação de métodos desnecessários.
+- Imagine uma interface GatinhoAtivo com métodos como correr() e caçar(). Um gatinho mais quieto, como um GatinhoDorminhoco, não deveria ser forçado a implementar o método caçar(). A solução seria criar interfaces menores e mais específicas, como GatinhoCacador e GatinhoDorminhoco.
+
+#### Exemplo Incorreto (violando o princípio):
+Neste exemplo, a interface é muito ampla e força todos os tipos de gatinhos a implementar métodos que eles não precisam.
+
+![image](https://github.com/user-attachments/assets/29eb6d16-d3e4-4615-aaa4-494d8677d4f1)
+
+### Exemplo Correto:
+Aqui, dividimos a interface em partes menores e mais específicas para que cada classe implemente apenas os métodos que ela realmente precisa.
+
+![image](https://github.com/user-attachments/assets/7d578f1f-37ba-4495-b7b9-fa077cb5d41d)
 
 ---
 
 ### 5. **Dependency Inversion Principle (Princípio da Inversão de Dependência)**
 
-- **Criador**: Robert C. Martin propôs este princípio como parte da solução para o acoplamento rígido.
-- **O que diz**: "Módulos de alto nível não devem depender de módulos de baixo nível. Ambos devem depender de abstrações."
-- **Explicação**: Este princípio sugere que você deve depender de interfaces ou abstrações, e não de implementações concretas. Isso permite que as partes do seu sistema sejam mais facilmente substituídas e testadas, além de reduzir o acoplamento entre os componentes.
-- **Exemplo**: Uma classe `Carro` deve depender de uma interface `Motor`, em vez de uma classe concreta `MotorV8`. Assim, você pode trocar o motor por um `MotorElétrico` sem modificar a classe `Carro`.
+- **"Módulos de alto nível não devem depender de módulos de baixo nível. Ambos devem depender de abstrações."**
+- Este princípio sugere que você deve depender de interfaces ou abstrações, e não de implementações concretas. Isso permite que as partes do seu sistema sejam mais facilmente substituídas e testadas, além de reduzir o acoplamento entre os componentes.
+- Imagine que uma classe GatinhoTreinador treina gatinhos para realizar tarefas como "caçar". Em vez de depender diretamente de uma classe GatinhoCacador, GatinhoTreinador deve depender de uma interface GatinhoQueCaca. Assim, você pode trocar o tipo de gatinho caçador sem modificar a classe GatinhoTreinador.
+  
+#### Exemplo Incorreto (violando o princípio):
+Nesta versão, a classe GatinhoTreinador depende diretamente de uma implementação concreta, GatinhoCacador, criando um acoplamento rígido. Isso torna difícil a substituição ou teste do sistema.
+
+![image](https://github.com/user-attachments/assets/7c94f3e3-026f-4aba-a59e-ad1c3cf06e11)
+
+### Exemplo Correto:
+Aqui, introduzimos uma interface GatinhoQueCaca e fazemos com que a classe GatinhoTreinador dependa dessa abstração, permitindo que qualquer gatinho que implemente essa interface seja treinado, sem a necessidade de mudar o código da classe GatinhoTreinador.
+
+![image](https://github.com/user-attachments/assets/9ff26533-8646-443c-bcb6-f7b1f9bcfeb0)
+
 
 ---
 
